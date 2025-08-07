@@ -1,0 +1,10 @@
+venv/
+__pycashe__
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.pot
+*.mo
