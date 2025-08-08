@@ -66,9 +66,8 @@ class CreateSubscriptionView(generics.CreateAPIView):
                 )
 
             plan_id = request.data.get('plan')
-            payment_id = request.data.get('payment_id')
 
-            if not plan_id or not payment_id:
+            if not plan_id :
                 return Response(
                     {"error": "Plan ID and payment ID are required."}, 
                     status=status.HTTP_400_BAD_REQUEST
@@ -99,7 +98,6 @@ class CreateSubscriptionView(generics.CreateAPIView):
                 subscription.plan = plan
                 subscription.start_date = timezone.now()
                 subscription.end_date = timezone.now() + timedelta(days=30)
-                subscription.payment_id = payment_id
                 subscription.save()
             else:
 
@@ -108,7 +106,6 @@ class CreateSubscriptionView(generics.CreateAPIView):
                     plan=plan,
                     active=True,
                     end_date=timezone.now() + timedelta(days=30),
-                    payment_id=payment_id
                 )
 
 
