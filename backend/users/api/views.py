@@ -11,7 +11,6 @@ from datetime import timedelta
 
 User = get_user_model()
 
-# Create your views here.
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -37,7 +36,7 @@ class LogoutView(generics.GenericAPIView):
                 token = RefreshToken(refresh_token)
                 token.blacklist()
             except Exception:
-                # Token already expired or invalid
+
                 pass
 
             return Response(
@@ -45,7 +44,7 @@ class LogoutView(generics.GenericAPIView):
                 status=status.HTTP_205_RESET_CONTENT
             )
         except Exception as e:
-            # Still return success even if token is invalid
+
             return Response(
                 {"message": "Logged out successfully."}, 
                 status=status.HTTP_205_RESET_CONTENT
@@ -59,7 +58,7 @@ class SubscriptionPlanListView(generics.ListAPIView):
 class CreateSubscriptionView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         try:
-            # Validate user role
+
             if request.user.role != 'tenant_owner':
                 return Response(
                     {"error": "Only tenant owners can manage subscriptions."}, 
@@ -79,7 +78,7 @@ class CreateSubscriptionView(generics.CreateAPIView):
             tenant = request.user.tenant
             current_user_count = tenant.user_set.count()
 
-            # Validate plan limits with more descriptive error
+
             if current_user_count > plan.max_users:
                 return Response(
                     {
@@ -93,9 +92,9 @@ class CreateSubscriptionView(generics.CreateAPIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            # Handle subscription update/creation
+
             if hasattr(tenant, 'subscription'):
-                # Update existing subscription
+
                 subscription = tenant.subscription
                 subscription.plan = plan
                 subscription.start_date = timezone.now()
@@ -103,7 +102,7 @@ class CreateSubscriptionView(generics.CreateAPIView):
                 subscription.payment_id = payment_id
                 subscription.save()
             else:
-                # Create new subscription
+
                 subscription = Subscription.objects.create(
                     tenant=tenant,
                     plan=plan,
@@ -112,7 +111,7 @@ class CreateSubscriptionView(generics.CreateAPIView):
                     payment_id=payment_id
                 )
 
-            # Generate new tokens with updated subscription info
+
             refresh = RefreshToken.for_user(request.user)
             token = CustomTokenObtainPairSerializer.get_token(request.user)
 

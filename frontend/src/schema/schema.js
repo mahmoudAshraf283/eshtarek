@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-// Login form validation schema
+
 export const loginSchema = yup.object().shape({
   username: yup
     .string()
@@ -15,7 +15,7 @@ export const loginSchema = yup.object().shape({
     .default(false)
 });
 
-// Registration form validation schema
+
 export const registerSchema = yup.object().shape({
   username: yup
     .string()
@@ -40,7 +40,7 @@ export const registerSchema = yup.object().shape({
     .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
 
-// Profile update validation schema
+
 export const profileSchema = yup.object().shape({
   username: yup
     .string()
@@ -58,7 +58,7 @@ export const profileSchema = yup.object().shape({
     .min(2, 'Last name must be at least 2 characters'),
 });
 
-// Password change validation schema
+
 export const passwordChangeSchema = yup.object().shape({
   currentPassword: yup
     .string()

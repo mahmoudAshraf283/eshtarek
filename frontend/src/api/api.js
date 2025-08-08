@@ -1,15 +1,14 @@
 import axios from 'axios';
 
-// Create axios instance with base configuration
+
 const api = axios.create({
   baseURL: 'http://localhost:8000/api',
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, // 10 second timeout
 });
 
-// Request interceptor to add auth token
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
@@ -23,13 +22,13 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle token refresh
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // Check if error is 401 and we haven't retried yet
+ 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -39,7 +38,7 @@ api.interceptors.response.use(
           throw new Error('No refresh token available');
         }
 
-        // Only try to refresh if it's not a login request
+
         if (!originalRequest.url.includes('/login/')) {
           const response = await axios.post('http://localhost:8000/api/users/token/refresh/', {
             refresh: refreshToken,
@@ -48,12 +47,12 @@ api.interceptors.response.use(
           const { access } = response.data;
           localStorage.setItem('access_token', access);
             
-          // Update authorization header
+
           originalRequest.headers.Authorization = `Bearer ${access}`;
           return api(originalRequest);
         }
       } catch (refreshError) {
-        // Only clear tokens and redirect for non-login requests
+
         if (!originalRequest.url.includes('/login/')) {
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
@@ -63,12 +62,12 @@ api.interceptors.response.use(
       }
     }
 
-    // Handle other errors
+
     return Promise.reject(error);
   }
 );
 
-// Auth API endpoints
+
 export const authAPI = {
   register: (userData) => api.post('/users/register/', userData),
   login: (credentials) => api.post('/users/login/', credentials),

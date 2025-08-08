@@ -19,7 +19,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         password = validated_data.pop('password')
         is_tenant_owner = validated_data.pop('is_tenant_owner', False)
         
-        # Get or create tenant
         tenant, _ = Tenant.objects.get_or_create(name=tenant_name)
         
         # Check user limits if tenant has subscription
@@ -32,7 +31,6 @@ class RegisterSerializer(serializers.ModelSerializer):
                     f"This tenant has reached its maximum user limit of {max_users}"
                 )
         
-        # Create user
         user = User.objects.create(
             **validated_data,
             tenant=tenant,
@@ -49,7 +47,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         
-        # Add custom claims
         token["username"] = user.username
         token["is_superuser"] = user.is_superuser
         token["is_staff"] = user.is_staff

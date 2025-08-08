@@ -45,7 +45,6 @@ const HomePage = () => {
 
       setLoading(false);
     } catch (error) {
-      console.error('Error checking user status:', error);
       setError('Failed to load user information');
       setLoading(false);
     }
@@ -54,10 +53,8 @@ const HomePage = () => {
   const fetchSubscriptionPlans = async () => {
     try {
       const response = await authAPI.getSubscriptionPlans();
-      console.log('Subscription plans:', response.data); // Debug log
       setPlans(response.data);
     } catch (error) {
-      console.error('Error fetching plans:', error);
       setError('Failed to load subscription plans');
     }
   };
@@ -72,19 +69,19 @@ const HomePage = () => {
       setProcessing(true);
       setError('');
 
-      // Create payment intent
+
       const paymentIntent = await MockStripe.createPaymentIntent(selectedPlan.price * 100);
       
-      // Confirm payment
+
       const payment = await MockStripe.confirmPayment(paymentIntent.clientSecret);
       
-      // If payment successful, update subscription
+
       const response = await authAPI.createSubscription({
         plan: selectedPlan.id,
         payment_id: payment.id,
       });
       
-      // Update tokens with new subscription data
+
       if (response.data.access && response.data.refresh) {
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
@@ -95,7 +92,7 @@ const HomePage = () => {
       setShowPaymentModal(false);
       
     } catch (error) {
-      // Handle specific error message from backend
+
       const errorMessage = error.response?.data?.error || 'Payment failed. Please try again.';
       setError(errorMessage);
     } finally {
@@ -103,7 +100,7 @@ const HomePage = () => {
     }
   };
 
-  // Add Payment Modal component
+
   const PaymentModal = () => (
     <Modal show={showPaymentModal} onHide={() => setShowPaymentModal(false)}>
       <Modal.Header closeButton>
@@ -137,7 +134,6 @@ const HomePage = () => {
         </div>
         <div className="border p-3 rounded mb-3">
           <h6>Payment Details</h6>
-          {/* Mock credit card input */}
           <div className="mb-3">
             <label>Card Number</label>
             <input 
@@ -260,8 +256,6 @@ const HomePage = () => {
           </Card>
         </Col>
       </Row>
-
-      {/* Add Payment Modal */}
       <PaymentModal />
     </Container>
   );

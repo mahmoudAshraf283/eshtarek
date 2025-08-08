@@ -6,7 +6,7 @@ from datetime import timedelta
 class User(AbstractUser):
     ROLES = (
         ('admin', 'Admin'),
-        ('tenant_owner', 'Tenant Owner'),  # New role for tenant owners
+        ('tenant_owner', 'Tenant Owner'),  
         ('tenant_user', 'Tenant User'),
     )
     
@@ -14,15 +14,15 @@ class User(AbstractUser):
     tenant = models.ForeignKey(
         'Tenant',
         on_delete=models.CASCADE,
-        null=True,  # Make tenant optional
+        null=True,  
         blank=True
     )
 
     def save(self, *args, **kwargs):
-        # If user is admin, tenant is not required
+
         if self.is_superuser or self.is_staff:
             self.role = 'admin'
-            # Don't require tenant for admin users
+
         elif not self.tenant:
             raise ValueError("Tenant is required for non-admin users")
         super().save(*args, **kwargs)
@@ -58,7 +58,7 @@ class Subscription(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.end_date:
-            # Set end_date to one month from start_date
+
             self.end_date = timezone.now() + timedelta(days=30)
         super().save(*args, **kwargs)
 
