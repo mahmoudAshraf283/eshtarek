@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { authAPI } from "../api/api"; // Adjust the import based on your project structure
+import { authAPI } from "../api/api"; 
 
 const Navigation = () => {
   const navigate = useNavigate();
