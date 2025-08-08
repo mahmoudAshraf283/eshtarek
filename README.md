@@ -198,16 +198,6 @@ docker-compose exec backend python manage.py test
 - Backend API: http://localhost:8000/api
 - Admin Interface: http://localhost:8000/admin
 
-## Environment Variables
-
-### Backend
-- `DJANGO_SETTINGS_MODULE`: eshtarek.settings
-- `DJANGO_SUPERUSER_PASSWORD`: admin123
-- `DATABASE_URL`: postgres://eshtarek:1234@db:5432/eshtarek
-
-### Frontend
-- `VITE_API_URL`: http://localhost:8000/api
-
 ## Project Structure
 
 ```
