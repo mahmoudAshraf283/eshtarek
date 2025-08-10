@@ -9,7 +9,7 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+// Formik setup for handling login form submission
   const formik = useFormik({
     initialValues: {
       username: "",

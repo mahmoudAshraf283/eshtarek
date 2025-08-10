@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+# Database service using PostgreSQL
   db:
     image: postgres:14
     volumes:
@@ -11,7 +12,7 @@ services:
       - POSTGRES_PASSWORD=1234
     ports:
       - "5432:5432"
-
+# Backend service using Django
   backend:
     build: ./backend
     volumes:
@@ -34,7 +35,7 @@ services:
             python manage.py migrate &&
             python manage.py runserver 0.0.0.0:8000"
 
-
+# Frontend service using React + Vite
   frontend:
     build: ./frontend
     volumes:

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-
+// This component checks if the user is authenticated
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   const token = localStorage.getItem('access_token');

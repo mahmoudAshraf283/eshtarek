@@ -11,15 +11,17 @@ from datetime import timedelta
 
 User = get_user_model()
 
-
+# Register view for creating new users
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [permissions.AllowAny]
 
+# Custom Token view to obtain JWT tokens
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
+# Logout view to blacklist the refresh token
 class LogoutView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -50,11 +52,13 @@ class LogoutView(generics.GenericAPIView):
                 status=status.HTTP_205_RESET_CONTENT
             )
 
+# View to list all subscription plans
 class SubscriptionPlanListView(generics.ListAPIView):
     queryset = SubscriptionPlan.objects.all()
     serializer_class = SubscriptionPlanSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+# View to create or update a subscription for a tenant
 class CreateSubscriptionView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         try:

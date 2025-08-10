@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
 from .models import User, Tenant, SubscriptionPlan, Subscription
 
+#show user model in admin dashboard
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'role', 'tenant', 'is_staff', 'is_active')
@@ -25,6 +26,7 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
+#show tenant model in admin dashboard
 @admin.register(Tenant)
 class TenantAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_at', 'subscription_status', 'user_count')
@@ -49,6 +51,7 @@ class TenantAdmin(admin.ModelAdmin):
             return format_html('{} / {}', count, max_users)
         return format_html('{}', count)
 
+# Register SubscriptionPlan in admin dashboard
 @admin.register(SubscriptionPlan)
 class SubscriptionPlanAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'max_users', 'active_subscriptions', 'total_revenue')
@@ -64,6 +67,7 @@ class SubscriptionPlanAdmin(admin.ModelAdmin):
         revenue = float(obj.price) * active_subs
         return format_html('${:.2} /month', revenue)
 
+# Register Subscription in admin dashboard
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('tenant', 'plan', 'start_date', 'end_date', 'active', 'usage_status')

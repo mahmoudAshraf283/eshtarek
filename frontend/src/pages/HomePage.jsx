@@ -13,12 +13,12 @@ const HomePage = () => {
   const [processing, setProcessing] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const navigate = useNavigate();
-
+// Check if the user is authenticated and fetch subscription plans
   useEffect(() => {
     checkUserStatus();
     fetchSubscriptionPlans();
   }, []);
-
+// Function to check user status and load their information
   const checkUserStatus = async () => {
     try {
       const token = localStorage.getItem('access_token');
@@ -49,7 +49,7 @@ const HomePage = () => {
       setLoading(false);
     }
   };
-
+// Function to fetch available subscription plans
   const fetchSubscriptionPlans = async () => {
     try {
       const response = await authAPI.getSubscriptionPlans();
@@ -58,12 +58,12 @@ const HomePage = () => {
       setError('Failed to load subscription plans');
     }
   };
-
+// Function to handle subscription plan selection and payment
   const handleSubscribe = async (plan) => {
     setSelectedPlan(plan);
     setShowPaymentModal(true);
   };
-
+// Function to handle payment processing
   const handlePayment = async () => {
     try {
       setProcessing(true);
@@ -100,7 +100,7 @@ const HomePage = () => {
     }
   };
 
-
+// Modal component for payment processing
   const PaymentModal = () => (
     <Modal show={showPaymentModal} onHide={() => setShowPaymentModal(false)}>
       <Modal.Header closeButton>

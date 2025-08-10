@@ -1,4 +1,6 @@
+// Mock Stripe service for simulating payment processing
 class MockStripe {
+// Simulate creating a payment intent
   static async createPaymentIntent(amount) {
 
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -8,7 +10,7 @@ class MockStripe {
       amount: amount,
     };
   }
-
+// Simulate confirming a payment
   static async confirmPayment(clientSecret) {
 
     await new Promise(resolve => setTimeout(resolve, 1500));

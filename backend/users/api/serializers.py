@@ -5,6 +5,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
 
+# Register Serializer for User
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     tenant_name = serializers.CharField(write_only=True)
@@ -42,6 +43,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         
         return user
 
+# Custom Token Serializer to include additional user information
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -65,6 +67,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         
         return token
 
+# Serializers for Tenant and Subscription models
 class TenantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tenant

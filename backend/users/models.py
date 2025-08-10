@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from datetime import timedelta
 
+# Custom User model
 class User(AbstractUser):
     ROLES = (
         ('admin', 'Admin'),
@@ -27,6 +28,7 @@ class User(AbstractUser):
             raise ValueError("Tenant is required for non-admin users")
         super().save(*args, **kwargs)
 
+# Tenant model
 class Tenant(models.Model):
     name = models.CharField(max_length=100, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -34,6 +36,7 @@ class Tenant(models.Model):
     def __str__(self):
         return self.name
 
+# Subscription Plan model
 class SubscriptionPlan(models.Model):
     PLAN_CHOICES = [
         ("free", "Free"),
@@ -49,6 +52,7 @@ class SubscriptionPlan(models.Model):
     def __str__(self):
         return f"{self.name} (${self.price}/month)"
 
+# Subscription model
 class Subscription(models.Model):
     tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE, related_name="subscription")
     plan = models.ForeignKey(SubscriptionPlan, on_delete=models.PROTECT)

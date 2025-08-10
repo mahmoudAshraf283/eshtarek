@@ -7,7 +7,7 @@ const Navigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("access_token");
-
+// Handle logout and redirect to login page
   const handleLogout = async () => {
     try {
       await authAPI.logout();

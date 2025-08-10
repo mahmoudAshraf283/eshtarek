@@ -8,7 +8,7 @@ const api = axios.create({
   },
 });
 
-
+// Add a request interceptor to include the access token in the Authorization header
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
@@ -22,7 +22,7 @@ api.interceptors.request.use(
   }
 );
 
-
+// Add a response interceptor to handle token refresh logic
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -67,7 +67,7 @@ api.interceptors.response.use(
   }
 );
 
-
+// API methods for user authentication and subscription management
 export const authAPI = {
   register: (userData) => api.post('/users/register/', userData),
   login: (credentials) => api.post('/users/login/', credentials),
